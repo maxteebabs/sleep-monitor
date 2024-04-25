@@ -1,0 +1,13 @@
+{
+    "docker_dev": {
+      "username": "postgres",
+      "password": "pwd",
+      "database": "sleepmonitor",
+      "host": "sleepmonitor.db",
+      "dialect": "postgres",
+      "port": "5432",
+      "logging": false,
+      "minifyAliases": true
+    }
+}
+  

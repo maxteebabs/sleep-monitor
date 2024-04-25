@@ -1,0 +1,29 @@
+{
+    "${PROJECT_NAME}": {
+      "username": "${DB_USER}",
+      "password": "${DB_PASSWORD}",
+      "database": "${DB_NAME}",
+      "host": "${DB_HOST}",
+      "dialect": "postgres",
+      "port": "${DB_PORT}",
+      "logging": ${DB_LOG},
+      "minifyAliases": true
+    },
+    "${TEST_PROJECT_NAME}": {
+      "username": "${DB_USER}",
+      "password": "${DB_PASSWORD}",
+      "database": "${TEST_DB_NAME}",
+      "host": "${DB_HOST}",
+      "dialect": "postgres",
+      "port": "${DB_PORT}",
+      "logging": ${DB_LOG},
+      "minifyAliases": true,
+      "pool": {
+        "max": 20,
+        "min": 0,
+        "acquire": 30000,
+        "idle": 10000
+      }
+    }
+  }
+  

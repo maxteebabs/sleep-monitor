@@ -1,0 +1,13 @@
+{
+    "${PROJECT_NAME}": {
+      "username": "${DB_USER}",
+      "password": "${DB_PASSWORD}",
+      "database": "${DB_NAME}",
+      "host": "${DB_HOST}",
+      "dialect": "postgres",
+      "port": "${DB_PORT}",
+      "logging": ${DB_LOG},
+      "minifyAliases": true
+    }
+}
+  
