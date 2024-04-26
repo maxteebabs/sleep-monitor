@@ -1,22 +1,23 @@
 import { Profile } from "../models/Model";
-import storageService from "./StorageService";
+import instance from "./axiosInstance";
 
 class ProfileService {
     async fetchData() {
-        return storageService.getAll({ order: 'desc', days: 7 });
+        try{
+            const results = await instance.get('/profile?order=desc&days=7');  
+            return results.data;    
+        }catch(error) {
+            console.log(error)
+            return [];
+        }
     }
 
     async register(data: Profile) {
         try {
-            const existing = await storageService.get(data);
-            await this.validateInputs(data, existing);
-
-            if (existing) {
-                data.durations = [...existing.durations, ...data.durations]
-            }
-            return storageService.save(data);
+            return instance.post('/register', data);
+            
         } catch (error) {
-            return Promise.reject(error);
+            return error;
         }
     }
 

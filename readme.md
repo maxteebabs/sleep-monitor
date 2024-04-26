@@ -1,7 +1,7 @@
 # SLEEP MONITOR APP
 
 ### About the Sleep Monitor App
-The sleep monitor app is built using [React]('https://react.dev/learn/installation') and [TypeScript]('https://www.typescriptlang.org/).
+The sleep monitor app is built using [React](https://react.dev/learn/installation), [TypeScript](https://www.typescriptlang.org/), [NodeJs](https://nodejs.org/en), and [Postgres](https://www.postgresql.org/).
 The styling of the app uses [TailWindCss](https://tailwindcss.com/)
 Unit test was written for this app using [jest](https://jestjs.io/) and all 14 test cases passed.
 The charts for display uses [Apache Echarts](https://echarts.apache.org/handbook/en/get-started/) and the app interfaced with Echarts using this [npm package](https://www.npmjs.com/package/echarts)
@@ -20,7 +20,7 @@ This is a 404 page
 The app uses localstorage to improvise for a real database;
 
 ### Time Estimate
-- Estimated Time to completion = 10 Hours
+- Estimated Time to completion = 15 Hours
 
 ### To Clone / Download the app
 -  Download the app by visiting [Github maxteebabs](https://github.com/maxteebabs/sleep-monitor/tree/master)
@@ -28,7 +28,7 @@ The app uses localstorage to improvise for a real database;
 git clone https://github.com/maxteebabs/sleep-monitor.git
 ```
 
-### To Start the application
+### To Start the Frontend application
 - First Install Dependencies
 ```sh
 npm install
@@ -36,6 +36,38 @@ npm install
 - Start the app
 ```sh
 npm start
+```
+
+### To Start the Backend application
+```sh
+cd server
+```
+- For firsttime
+```sh
+sh ./bin/start.sh --build 
+```
+- subsequently
+```sh
+sh ./bin/start.sh
+```
+- Create the database
+```sh
+sh ./bin/db_restore.sh
+```
+
+### To Stop the Backend application
+```sh
+sh ./bin/stop.sh
+```
+### To check for server logs
+```sh
+ docker logs -f sleepmonitor.api
+```
+
+### if you encounter any error, because of envsubst, then follow this step
+```sh
+brew install gettext
+brew link --force gettext 
 ```
 
 ### To run test

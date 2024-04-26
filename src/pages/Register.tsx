@@ -2,6 +2,7 @@ import React, {useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Profile, Duration, DurationErrors, GenderEnum, ProfileErrors } from "../models/Model";
 import profileService from "../services/ProfileService";
+import { AxiosError } from 'axios';
 
 export const Registration = () => {
   const navigate = useNavigate();
@@ -129,6 +130,9 @@ export const Registration = () => {
     profileService.register(formValues).then(value => {
       navigate('/preview');
     }).catch(error => {
+      if(error instanceof AxiosError) {
+        return setError(error.response?.data)
+      }
       if(error instanceof Error) {
         return setError(error.message)
       }

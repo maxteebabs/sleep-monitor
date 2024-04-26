@@ -29,7 +29,7 @@ module.exports = function (sequelize, DataTypes) {
   Duration.associate = function (models) {
     // associations can be defined here
     Duration.belongsTo(models.User, {
-      as: 'User',
+      as: 'user',
       foreignKey: {
         field: 'UserId',
         allowNull: false

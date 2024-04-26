@@ -1,4 +1,5 @@
-const { User, Duration, sequelize } = require('../models');
+// const { Op } = require('sequelize');
+const { User, Duration } = require('../models');
 
 const createUser = (data, transaction = null) => {
     return User.create(data, { transaction });
@@ -34,16 +35,68 @@ const createDurationBulk = (data, transaction = null) => {
     return Duration.bulkCreate(data, { transaction });
 }
 
-const updateDuration = (data, transaction = null) => {
-    return Duration.create(data, { transaction });
+const updateDuration = (data, user, transaction = null) => {
+    return Duration.update(data, 
+        {
+            include: [
+                { 
+                    model: User, as: 'user', 
+                    attributes: ['name', 'gender'],      
+                    where: {
+                        name: user.name,
+                        gender: user.gender
+                    }, 
+                    required: true
+                }
+            ],
+            where: { name: user.name, gender: user.gender}
+        },
+        { transaction });
 }
 
-const getDurations = (sleepDates) => {
+const deleteDurations = (name, gender, sleepDates) => {
+    const durations =  Duration.findAll({
+        attributes: ['id'],
+        include: [
+            { 
+                model: User, as: 'user', 
+                attributes: [],      
+                where: {
+                    name: name,
+                    gender: gender
+                }, 
+                required: true
+            }
+        ],
+        where: {
+            sleepDate: sleepDates
+        }
+    });
+    return Duration.destroy({where: {id: durations} })
+}
+
+const getDurations = (name, gender, sleepDates) => {
     return Duration.findOne({
         attributes: ['sleepDate'],
-        where: {sleepDate:  sleepDates}
+        include: [
+            { 
+                model: User, as: 'user', 
+                attributes: ['name', 'gender'],      
+                where: {
+                    name: name,
+                    gender: gender
+                }, 
+                required: true
+            }
+        ],
+        where: {
+            sleepDate: sleepDates
+                // [Op.in]: sleepDates.map(timestamp => sequelize.literal(`FROM_UNIXTIME(${timestamp})`))
+            // }
+        }
     })
 }
+
 const getOne = (id) => {
     return User.findOne({
         where: {id}
@@ -59,5 +112,7 @@ module.exports = {
     getUsers,
     createDurationBulk,
     updateDuration,
-    getDurations
+    getDurations,
+    deleteDurations,
+    
 }

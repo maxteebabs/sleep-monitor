@@ -22,12 +22,15 @@ const register = (req, res, next) => {
                     }
                 });
                 
-                const sleepDates =  durationData.map(duration => duration.sleepDate);
-                if (userRepository.getDurations(sleepDates)) {
-                    return new restifyError.BadRequestError(`Duration Dates exist for ${JSON.stringify(sleepDates)}`);
+                let sleepDates =  durationData.map(duration => duration.sleepDate);
+                const durationExists = await userRepository.getDurations(user.name, user.gender, sleepDates);
+
+                if (durationExists) {
+                    sleepDates = durationData.map(duration=> moment.unix(duration.sleepDate).format('YYYY-MM-DD'));
+                    return res.send(400, `Duration Dates exist for ${JSON.stringify(sleepDates)}`);
                 }
                
-                userRepository.updateDuration(durationData);
+                await userRepository.createDurationBulk(durationData);
             } else {
                 //create everything
                 const user = await userRepository.createUser({ name, gender }, transaction);
@@ -47,7 +50,7 @@ const register = (req, res, next) => {
             res.send(200, { message: 'successful' });
             return next();
         } catch (error) {
-            console.log('eeeee', error)
+            console.error(error)
             await transaction.rollback();
             if (error instanceof Error) {
                 return next(error);
@@ -66,6 +69,7 @@ const profile = async (req, res) => {
             gender: user.gender,
             durations: user.durations.map(({sleepTimeDuration, sleepDate}) => ({
                 sleepTimeDuration, 
+                sss: sleepDate,
                 date: moment.unix(sleepDate).format('YYYY-MM-DD')
             }))
         }
